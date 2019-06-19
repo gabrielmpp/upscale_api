@@ -6,7 +6,7 @@ The API can be installed in JASMIN running the following line:
 pip install git+https://github.com/gabrielmpp/upscale_api
 ```
 ## Tutorial
-The following steps run from an ipython interpreter in JASMIN.
+The following steps can be run from an ipython interpreter on JASMIN.
 
 1) Import the api and iris for saving the ncdf file:
 ```
