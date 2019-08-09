@@ -50,6 +50,7 @@ class upscale():
             path = os.path.join(self.base_path,self.resolution,self.time_scale,lKey[i],self.simulation)
             print 'Trying path ' + path
             if os.path.isdir(path):
+                self.path=path
                 return path
                 print('File found')
                 break
