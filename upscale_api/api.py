@@ -89,7 +89,7 @@ class upscale():
     def read_nc_files(self, filepaths, region=None,
                       transformLon=False, lonName="longitude", reverseLat=False,
                       time_slice_for_each_year=slice(None, None), season=None, lcstimelen=None, set_date=False,
-                      binary_mask=None, maskdims={'latitude': 'lat', 'longitude': 'lon'}, dif_lon=0):
+                      binary_mask=None, maskdims={'latitude': 'lat', 'longitude': 'lon'}):
         """
 
         :param binary_mask:
@@ -109,15 +109,8 @@ class upscale():
                 x.coords[lonName].values = \
                     (x.coords[lonName].values + 180) % 360 - 180
             if isinstance(region, dict):
-                if dif_lon > 0:
-                    x = x.roll(longitude=-dif_lon, roll_coords=True)
-                    x = x.sortby('longitude')
-                    x = x.roll(longitude=-dif_lon, roll_coords=False)
-
-                    x = x.sel(region)
-                    x = x.roll(longitude=dif_lon, roll_coords=False)
-                    x = x.roll(longitude=dif_lon, roll_coords=True)
-
+                if region['longitude'][1] < region['longitude'][0]:
+                    x = x.sel(longitude=(x.sel < region['longitude'][1]) | (x.sel > region['longitude'][0]))
                 else:
                     x = x.sel(region)
             if not isinstance(season, type(None)):
@@ -162,18 +155,11 @@ class upscale():
 
     def read_cubes(self, lat_botton=None, lon_left=None, lat_top=None, lon_right=None,
                    region=None, transformLon=True):
-        if lon_right < lon_left:
-            dif_lon = lon_right
-            lon_right = 360
-            lon_left = lon_left - dif_lon
-
-        else:
-            dif_lon = 0
 
         if isinstance(region, type(None)):
             region = dict(
-                latitude=slice(lat_botton, lat_top),
-                longitude=slice(lon_left, lon_right)
+                latitude=[lat_botton, lat_top],
+                longitude=[lon_left, lon_right]
             )
         elif isinstance(region, str):
             region = self.createDomains(region)
@@ -185,6 +171,6 @@ class upscale():
         files_list = [File for File in os.listdir(var_path) if fnmatch.fnmatch(File,'*{year}*.nc'.format(year=self.year)) and not fnmatch.fnmatch(File,'*'+self.variable+'*')] # list files and ignores symlinks
         print(files_list)
         files_name = [os.path.join(var_path, files_list[i]) for i in range(len(files_list))]
-        cube = self.read_nc_files(files_name, region, transformLon=transformLon, dif_lon=dif_lon)
+        cube = self.read_nc_files(files_name, region, transformLon=transformLon)
 
         return cube[self.variable]
