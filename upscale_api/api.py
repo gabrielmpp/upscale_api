@@ -109,7 +109,7 @@ class upscale():
                 x.coords[lonName].values = \
                     (x.coords[lonName].values + 180) % 360 - 180
             if isinstance(region, dict):
-                x = x.sel(region)
+                x = x.sel(region, method='nearest')
             if not isinstance(season, type(None)):
 
                 if season == 'DJF':
