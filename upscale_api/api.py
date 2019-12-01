@@ -169,8 +169,8 @@ class upscale():
 
         if isinstance(region, type(None)):
             region = dict(
-                latitude=slice(lat_botton, lon_right),
-                longitude=slice(lon_left, lat_top)
+                latitude=slice(lat_botton, lat_top),
+                longitude=slice(lon_left, lon_right)
             )
         elif isinstance(region, str):
             region = self.createDomains(region)
