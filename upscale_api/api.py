@@ -110,7 +110,7 @@ class upscale():
                     (x.coords[lonName].values + 180) % 360 - 180
             if isinstance(region, dict):
                 if region['longitude'][1] < region['longitude'][0]:
-                    x = x.sel(longitude=(x.sel < region['longitude'][1]) | (x.sel > region['longitude'][0]))
+                    x = x.sel(longitude=(x.longitude < region['longitude'][1]) | (x.longitude > region['longitude'][0]))
                 else:
                     x = x.sel(region)
             if not isinstance(season, type(None)):
