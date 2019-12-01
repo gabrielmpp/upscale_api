@@ -3,6 +3,8 @@ API to easily access upscale ncdfs in the JASMIN/ceda server.
 ## Installation
 The API can be installed in JASMIN running the following line:
 ```
+pip install https://github.com/gabrielmpp/upscale_api/archive/xarray.zip
+
 pip install git+https://github.com/gabrielmpp/upscale_api
 ```
 ## Tutorial
