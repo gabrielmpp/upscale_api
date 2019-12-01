@@ -167,4 +167,5 @@ class upscale():
         print(files_list)
         files_name = [os.path.join(var_path, files_list[i]) for i in range(len(files_list))]
         cube = self.read_nc_files(files_name, region)
-        return cube
+
+        return cube[self.variable]
