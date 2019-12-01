@@ -150,7 +150,9 @@ class upscale():
         print('*---- Finished reading data ----*')
         return full_array
 
-    def read_cubes(self, lat_min=None, lon_min=None, lat_max=None, lon_max=None, region=None):
+    def read_cubes(self, lat_min=None, lon_min=None, lat_max=None, lon_max=None,
+                   region=None, transformLon=True):
+
         if isinstance(region, type(None)):
             region = dict(
                 latitude=slice(lat_min, lat_max),
@@ -166,6 +168,6 @@ class upscale():
         files_list = [File for File in os.listdir(var_path) if fnmatch.fnmatch(File,'*{year}*.nc'.format(year=self.year)) and not fnmatch.fnmatch(File,'*'+self.variable+'*')] # list files and ignores symlinks
         print(files_list)
         files_name = [os.path.join(var_path, files_list[i]) for i in range(len(files_list))]
-        cube = self.read_nc_files(files_name, region)
+        cube = self.read_nc_files(files_name, region, transformLon=transformLon)
 
         return cube[self.variable]
