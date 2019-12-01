@@ -109,7 +109,7 @@ class upscale():
                 x.coords[lonName].values = \
                     (x.coords[lonName].values + 180) % 360 - 180
             if isinstance(region, dict):
-                x = x.sel(region, method='nearest')
+                x = x.sel(region)
             if not isinstance(season, type(None)):
 
                 if season == 'DJF':
@@ -158,7 +158,7 @@ class upscale():
                 latitude=slice(lat_min, lat_max),
                 longitude=slice(lon_min, lon_max)
             )
-        else:
+        elif isinstance(region, str):
             region = self.createDomains(region)
 
         print('Reading cubes  for variable {} and resolution {}'.format(self.variable,self.resolution))
