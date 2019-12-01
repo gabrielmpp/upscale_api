@@ -47,10 +47,10 @@ class upscale():
         """
 
         dic_of_paths = load_dictionary()
-        lKey = [key for key, value in dic_of_paths.iteritems() if value[0] == self.variable]
+        lKey = [key for key, value in dic_of_paths.items() if value[0] == self.variable]
         nitems = len(lKey)
-        for i in range(0,nitems):
-            path = os.path.join(self.base_path,self.resolution,self.time_scale,lKey[i],self.simulation)
+        for i in range(nitems):
+            path = os.path.join(self.base_path, self.resolution, self.time_scale, lKey[i], self.simulation)
             print('Trying path ' + path)
             if os.path.isdir(path):
                 self.path=path
