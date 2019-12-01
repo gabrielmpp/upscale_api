@@ -112,6 +112,8 @@ class upscale():
                 if dif_lon > 0:
                     x = x.roll(longitude=-dif_lon, roll_coords=True)
                     x = x.roll(longitude=-dif_lon, roll_coords=False)
+                    print(x)
+                    print(region)
                     x = x.sel(region)
                     x = x.roll(longitude=dif_lon, roll_coords=False)
                     x = x.roll(longitude=dif_lon, roll_coords=True)
