@@ -166,5 +166,5 @@ class upscale():
         files_list = [File for File in os.listdir(var_path) if fnmatch.fnmatch(File,'*{year}*.nc'.format(year=self.year)) and not fnmatch.fnmatch(File,'*'+self.variable+'*')] # list files and ignores symlinks
         print(files_list)
         files_name = [os.path.join(var_path, files_list[i]) for i in range(len(files_list))]
-        cube = self.read_nc_files(self, files_name, region)
+        cube = self.read_nc_files(files_name, region)
         return cube
