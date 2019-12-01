@@ -110,13 +110,11 @@ class upscale():
                     (x.coords[lonName].values + 180) % 360 - 180
             if isinstance(region, dict):
                 if dif_lon > 0:
-                    x = x.roll(longitude=-dif_lon, roll_coords=True)
-                    x = x.sortby('longitude')
                     x = x.roll(longitude=-dif_lon, roll_coords=False)
-                    print(x)
-                    print(region)
+                    x = x.sortby('longitude')
+                    x = x.roll(longitude=-dif_lon, roll_coords=True)
                     x = x.sel(region)
-                    x = x.roll(longitude=dif_lon, roll_coords=False)
+                    x = x.roll(longitude=dif_lon, roll_coords=True)
                 else:
                     x = x.sel(region)
             if not isinstance(season, type(None)):
