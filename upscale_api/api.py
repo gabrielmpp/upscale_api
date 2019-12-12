@@ -1,10 +1,11 @@
-from upscale_api.dictionary import load_dictionary
+from dictionary import load_dictionary
 import os
 import fnmatch
 import pandas as pd
 import xarray as xr
 import numpy as np
 import glob
+import numpy as np
 
 def display_variables():
     dic_of_paths = load_dictionary()
@@ -27,15 +28,18 @@ def display_resolutions_and_simulations():
 
 
 class upscale():
-    def __init__(self, resolution, simulation, variable, time_scale, climate, year=None):
-        self.base_path = base_path = '/group_workspaces/jasmin4/upscale/GA3/{climate}_climate/'.format(climate=climate)
+    def __init__(self, resolution, simulation, variable, time_scale, climate,
+                 year=None,
+                 base_path = None \
+                 ):
         self.resolution = resolution
         self.variable = variable
         self.time_scale = time_scale
         self.climate = climate
         self.year = year
         self.simulation = simulation
-
+        self.base_path = \
+        '/group_workspaces/jasmin4/upscale/GA3/{climate}_climate/'.format(climate=climate)
 
     def _create_path(self):
         """ Returns the path for the desired model outputs
@@ -109,10 +113,16 @@ class upscale():
                 x.coords[lonName].values = \
                     (x.coords[lonName].values + 180) % 360 - 180
             if isinstance(region, dict):
-                if region['longitude'][1] < region['longitude'][0]:
-                    x = x.sel(longitude=(x.longitude < region['longitude'][1]) | (x.longitude > region['longitude'][0]))
+                if np.sign(region['longitude'][1]*region['longitude'][0]) == -1:
+                    mask=( x.longitude < region['longitude'][1] ) & ( x.longitude > region['longitude'][0])
+                    x = x.where(mask, drop=True)
+                    x = x.sel(latitude=slice(region['latitude'][0],
+                                             region['latitude'][1]))
                 else:
-                    x = x.sel(region)
+                    x = x.sel(latitude=slice(region['latitude'][0],
+                                             region['latitude'][1]),
+                              longitude=slice(region['longitude'][0],
+                                              region['longitude'][1]))
             if not isinstance(season, type(None)):
 
                 if season == 'DJF':
