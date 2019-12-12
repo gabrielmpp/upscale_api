@@ -1,1 +1,1 @@
-from upscale_api.api import *
+from upscale_api import api
